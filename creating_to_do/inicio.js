@@ -30,6 +30,8 @@ let data_table_fn = (datos)=>
         container_table_category.innerHTML = ''; 
         container_table_category.append(fragment_table_category);
         form_insert_data.reset();
+
+        add_event_to_delete();
     })
 };
 
@@ -40,17 +42,23 @@ form_insert_data.addEventListener('submit', (e)=>{
 
 data_table_fn(new FormData());
 
-let form_delete_to_data = document.querySelectorAll('.form_delete_to_data');
-form_delete_to_data.addEventListener('submit', (e) => {
-    e.preventDefault();
-    let element_to_delete = new FormData(form_delete_to_data);
-    fetch('api.php',{
-        method: 'POST',
-        body: element_to_delete,
-    })
-    .then( result => result.json)
-    .then( data => {
-        data_table_fn(new FormData());
-    })
-});
+let add_event_to_delete = ()=>{
+    
+    let form_delete_to_data = document.querySelectorAll('.form_delete_to_data');
+    form_delete_to_data.forEach((item, index, array) => {
+
+        item.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let element_to_delete = new FormData(form_delete_to_data);
+            fetch('api.php',{
+                method: 'POST',
+                body: element_to_delete,
+            })
+            .then( result => result.json)
+            .then( data => {
+                data_table_fn(new FormData());
+            })
+        });
+    });
+};
 
